@@ -36,3 +36,99 @@
     transform: rotate(360deg);
   }
 }
+
+html{
+  --main-color: rgb(104,2,169);
+}
+#app{
+  display: grid;
+  grid-template-rows: 60px auto 50px;
+  height: 100vh;
+}
+#top-banner{
+  background-color: var(--main-color);
+}
+#container{
+  height: 100%;
+}
+#interviewer{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+}
+#interviewer > .interviewer-item{
+  width: 150px;
+  margin: 0 25px;
+  text-align: center;
+  position: relative;
+}
+#interviewer > .interviewer-item > span{
+  display: block;
+}
+#interviewer > .interviewer-item>.icon{
+  color: var(--main-color);
+  font-size: 60px;
+}
+#interviewer > .interviewer-item>.delete{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+#bottom-navigation{
+  position: fixed;
+  display: flex;
+  bottom: 0;
+  height: 50px;
+  background-color: red;
+  width: 100%;
+}
+#bottom-navigation > .right{
+  margin-left: auto;
+}
+
+#interviewed #left-card{
+  border: 1px solid black;
+}
+#interviewed #right-card{
+  border: 1px solid black;
+}
+#questions{
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+#questions #question-container{
+  display: grid;
+  height: 100%;
+  grid-template-columns: 5% auto 5%;
+}
+#questions .question-slide{
+  text-align: center;
+}
+.g-txtcenter{
+  text-align: center;
+}
+
+#results #right-card{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+#results #right-card > h2{
+  display: inline;
+  width: fit-content;
+}
+#results #right-card > button{
+  margin-left: auto;
+}
+.g-subheader{
+  margin: 0;
+}
+#results .modal{
+  background-color: red;
+}
+
+.modal-table{
+  max-height: 50vh;
+}

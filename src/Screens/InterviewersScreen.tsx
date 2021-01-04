@@ -1,10 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, TextField } from "@material-ui/core";
 import React from "react";
 import InterviewerIcon from "../Components/InterviewerIcon";
 import NewInterviewerIcon from "../Components/NewInterviewerIcon";
 import GlobalDataContext, { GlobalDataType } from "../Context";
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
-import BottomNav from "./../Components/BottomNav";
 import { RouteChildrenProps } from "react-router";
 
 interface InterviewersScreenState{
@@ -12,6 +11,7 @@ interface InterviewersScreenState{
     m_fullName: string
     m_employeeId: string
     m_eID: string
+    isAlertOpened: boolean
 }
 
 export default class InterviewersScreen extends React.Component<RouteChildrenProps,InterviewersScreenState,GlobalDataType>{
@@ -28,7 +28,8 @@ export default class InterviewersScreen extends React.Component<RouteChildrenPro
             isModalOpen: false,
             m_fullName: "",
             m_employeeId: "",
-            m_eID: ""
+            m_eID: "",
+            isAlertOpened: false
         }
     }
 
@@ -43,6 +44,14 @@ export default class InterviewersScreen extends React.Component<RouteChildrenPro
     }
 
     onAddNewInterviewer = () => {
+        let {m_fullName
+            ,m_employeeId
+            ,m_eID} = this.state
+
+        if(m_fullName == "" || m_employeeId == "" || m_eID == ""){
+            this.setState({isAlertOpened: true})
+            return
+        }
         this.context.onInterviewerAdd({
             fullName: this.state.m_fullName,
             eID: this.state.m_eID,
@@ -95,7 +104,7 @@ export default class InterviewersScreen extends React.Component<RouteChildrenPro
 
     render(){
         return <>
-            <h2>Entrevistadores</h2>
+            <h1>Entrevistadores</h1>
             <div id="interviewer">
                 {
                     this.context.interviewers.map((v,i)=>
@@ -108,11 +117,28 @@ export default class InterviewersScreen extends React.Component<RouteChildrenPro
                 }
                 <NewInterviewerIcon onClick={this.onAddInterviewer}/>
             </div>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={this.state.isAlertOpened}
+                autoHideDuration={6000}
+                onClose={(e,r) => {
+                    if (r === 'clickaway') {
+                        return;
+                    }
+                    this.setState({isAlertOpened: false})
+                }}
+                message="Por favor llene todos los datos"
+            />
             <Dialog open={this.state.isModalOpen} 
                 onClose={v => this.onModalClose()}
+                className="g-modal"
                 aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">
-                        <PersonAddOutlinedIcon fontSize="large"/> Nuevo Entrevistador
+                    <DialogTitle id="form-dialog-title" className="title">
+                        <PersonAddOutlinedIcon className="icon" fontSize="large"/> 
+                        <span className="text">  Nuevo entrevistador</span>
                     </DialogTitle>
                     <DialogContent>
                         <TextField
@@ -157,7 +183,9 @@ export default class InterviewersScreen extends React.Component<RouteChildrenPro
                         />
                     </DialogContent>
                 <DialogActions>
-                    <Button onClick={e => this.onAddNewInterviewer()} color="primary">
+                    <Button onClick={e => this.onAddNewInterviewer()} 
+                        variant="contained"
+                        color="primary">
                         Guardar
                     </Button>
                 </DialogActions>

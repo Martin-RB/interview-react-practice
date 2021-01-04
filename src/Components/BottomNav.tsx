@@ -20,6 +20,8 @@ export default class BottomNav extends React.Component<BottomNavProps>{
             {
                 this.props.backButton?
                 <Button disabled={this.props.backButtonDisabled}
+                    className="left"
+                    variant="contained"
                     onClick={v=>{
                         this.props.onClickedBackButton?.call(this);
                     }}>
@@ -31,6 +33,7 @@ export default class BottomNav extends React.Component<BottomNavProps>{
                 this.props.forwardButton?
                 <Button disabled={this.props.forwardButtonDisabled}
                     className="right"
+                    variant="contained"
                     onClick={v=>{
                         this.props.onClickedForwardButton?.call(this);
                     }}>

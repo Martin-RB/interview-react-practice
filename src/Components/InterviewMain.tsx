@@ -75,9 +75,7 @@ export default class InterviewMain extends React.Component<any, InterviewMainSta
         let globalData = this.state.globalData
         return (
             <div id="app">
-            <Grid item xs={12} id="top-banner">
-                {JSON.stringify(this.state)}
-            </Grid>
+            <Grid item xs={12} id="top-banner"/>
             <div id="container">
                 <GlobalDataContext.Provider value={globalData}>
                     <Router>

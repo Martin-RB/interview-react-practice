@@ -39,6 +39,10 @@
 
 html{
   --main-color: rgb(104,2,169);
+  --label-color: rgb(160,160,160);
+  --white: #fafafa;
+  --negative: rgb(239,64,64);
+  --positive: rgb(76,137,245);
 }
 #app{
   display: grid;
@@ -50,6 +54,7 @@ html{
 }
 #container{
   height: 100%;
+  margin: 0 2%;
 }
 #interviewer{
   display: flex;
@@ -80,18 +85,48 @@ html{
   display: flex;
   bottom: 0;
   height: 50px;
-  background-color: red;
-  width: 100%;
+  width: calc(100% - 50px);
+  padding: 15px 25px;
 }
 #bottom-navigation > .right{
   margin-left: auto;
+  color: var(--white);
+  background-color: var(--positive);
+}
+#bottom-navigation > button:disabled{
+  color: lightgray;
+  background-color: gray;
+}
+#bottom-navigation > .left{
+  background-color: var(--negative);
 }
 
+#interviewed .card{
+  margin: 4px 15px;
+  
+}
 #interviewed #left-card{
-  border: 1px solid black;
+  border-top: 2px solid var(--main-color);
+  border-bottom: 2px solid var(--main-color);
+  padding: 25px;
+}
+#interviewed #left-card #icon-row{
+  display: grid;
+  grid-template-columns: 80px auto;
+  margin-bottom: 15px;
+}
+#interviewed #left-card #icon{
+  font-size: 60px;
+  display: inline;
+  color: var(--main-color);
 }
 #interviewed #right-card{
-  border: 1px solid black;
+  border: 2px solid var(--main-color);
+  border-radius: 4px;
+  padding: 25px;
+}
+#right-card #title{
+  margin: 0;
 }
 #questions{
   display: flex;
@@ -105,11 +140,33 @@ html{
 }
 #questions .question-slide{
   text-align: center;
+  font-size: x-large;
 }
+#questions .question-slide #title{
+  color: var(--label-color);
+}
+#questions .question-slide #question{
+
+}
+#questions .question-slide #field-set{
+  width: 50%;
+}
+#questions .question-slide #field-container{
+  justify-content: space-around;
+}
+
 .g-txtcenter{
   text-align: center;
 }
-
+#results #card-container{
+  padding: 0 3%;
+}
+#results .card{
+  margin-bottom: 40px;
+}
+#results #left-card{
+  
+}
 #results #right-card{
   display: flex;
   flex-direction: row;
@@ -119,16 +176,85 @@ html{
   display: inline;
   width: fit-content;
 }
-#results #right-card > button{
+#results #right-card > #see-results{
   margin-left: auto;
 }
+#results #right-card #table-container{
+  width: 100%;
+  overflow: hidden;
+}
+#results #right-card #table{
+  
+}
 .g-subheader{
-  margin: 0;
+  margin: 5px 0;
 }
-#results .modal{
-  background-color: red;
+.g-table{
+  table-layout:fixed;
 }
+.g-table td{
+  word-break: break-all;
+}
+#results-modal{
+  
+}
+#results-modal #table{
+  
+}
+#results-modal #header{
+  position: relative;
+}
+#results-modal #header #close{
+  --XD: 55px;
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  width: var(--XD);
+  height: var(--XD);
+  font-size: var(--XD);
+  cursor: pointer;
+}
+#results-modal #header #close > svg{
+  width: 100%;
+  height: 100%;
+}
+#results-modal #table .header-cell{
+  background-color: var(--main-color);
+  color: var(--white);
+}
+#results-modal #table .answer-cell{
+  width: 80px;
+}
+.g-modal{
 
-.modal-table{
+}
+.g-modal .modal-table{
   max-height: 50vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+.g-modal.g-modal span.text{
+  line-height: 1.6;
+  font-size: 1.6em;
+}
+.g-modal.g-modal svg.icon{
+  position: relative;
+  top: 5px;
+  color: var(--main-color);
+}
+.g-field{
+
+}
+.g-field .label{
+  color: var(--label-color);
+  font-size: large;
+}
+.g-field .input{
+
+}
+.g-field .text{
+  font-size: large;
+}
+.g-checkbox{
+  color: var(--main-color)!important
 }

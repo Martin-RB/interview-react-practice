@@ -1,8 +1,9 @@
-import { Button, Dialog, DialogContent, DialogTitle, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import { Button, Dialog, DialogContent, DialogTitle, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@material-ui/core";
 import React, { useContext, useEffect, useState } from "react";
 import { Redirect, RouteChildrenProps } from "react-router";
 import GlobalDataContext from "../Context";
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface KeyValue<T>{
     [key: string]: T
@@ -65,86 +66,99 @@ export default function ResultsScreen(props: RouteChildrenProps){
             skillGradeKv[v.name] /= skillQAmountKv[v.name]
         })
 
-        return {rows, skillGradeKv}
+        return {rows, skillGradeKv, skillSet}
     }
-    let {rows, skillGradeKv} = processData()
+    let {rows, skillGradeKv, skillSet} = processData()
 
-    let skillSet = []
-    let skillGrades = []
-
-    for (const k in skillGradeKv) {
-        if (Object.prototype.hasOwnProperty.call(skillGradeKv, k)) {
-            const v = skillGradeKv[k];
-            skillSet.push(k)
-            skillGrades.push(v)
-        }
-    }
-    return <>
+    return <div id="results">
         <h1>Resumen</h1>
         {!context.interviewed || context.answeredQuestions.length==0? <Redirect to="/interviewers"/>:null}
-        <Grid container className="results">
-            <Grid item xs={12} md={6}>
-                <h2>Datos del candidato</h2>
-                <div><span>Nombre completo</span></div>
-                <b>{interviewed.fullName}</b>
-                <div><span>Correo electronico</span></div>
-                <b>{interviewed.email}</b>
-                <div><span>Tipo</span></div>
-                <b>{interviewed.type}</b>
+        <Grid container id="card-container">
+            <Grid item xs={12} md={6} className="card">
+                <div id="left-card">
+                    <h2 className="g-subheader">Datos del candidato</h2>
+                    <div className="g-field">
+                        <div><span className="label">Nombre completo</span></div>
+                        <span className="text">{interviewed.fullName}</span>
+                    </div>
+                    <div className="g-field">
+                        <div><span className="label">Correo electronico</span></div>
+                        <span className="text">{interviewed.email}</span>
+                    </div>
+                    <div className="g-field">
+                        <div><span className="label">Tipo</span></div>
+                        <span className="text">{interviewed.type}</span>
+                    </div>
+                </div>
             </Grid>
-            <Grid container item xs={12} md={6}>
+            <Grid container item xs={12} md={6} id="right-card" className="card">
                 <Grid item xs={6}>
                     <h2 className="g-subheader">Resultados</h2>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button onClick={()=>onModalOpen()}>Ver resultados</Button>
+                    <Button id="see-results" onClick={()=>onModalOpen()}>Ver resultados</Button>
                 </Grid>
-                <Grid item xs={6}>
-                    <div><span>Skills</span></div>
-                    {
-                        skillSet.map((v,i)=>
-                            <p key={i.toString()}>{v}</p>)
-                    }
-                </Grid>
-                <Grid item xs={6}>
-                    
-                    <div><span>Puntaje</span></div>
-                    {
-                        skillGrades.map((v,i)=>
-                            <p key={i.toString()}>{(v*100).toFixed(2)} %</p>)
-                    }
-                </Grid>
-            </Grid>
-        </Grid>
-        <Dialog open={isQstnModalOpened} maxWidth="md"
-            onClose={v => onModalClose()}
-            aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">
-                    <PersonAddOutlinedIcon fontSize="large"/> Preguntas
-                </DialogTitle>
-                <DialogContent className="modal">
-                <TableContainer className="modal-table">
-                    <Table aria-label="sticky table" size="small" stickyHeader>
+                <Grid item xs={12}>
+                <TableContainer id="table-container">
+                    <Table aria-label="sticky table" size="small" stickyHeader className="g-table">
                         <TableHead>
                         <TableRow>
-                            <TableCell>Pregunta</TableCell>
-                            <TableCell align="right" size="small">REspuesta</TableCell>
-                            <TableCell align="right">Comentario</TableCell>
+                            <TableCell className="header-cell">Skill</TableCell>
+                            <TableCell className="header-cell" size="small">Puntaje</TableCell>
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {skillSet.map((v,i) => (
+                            <TableRow key={i.toString()}>
+                            <TableCell>
+                                {v.name}
+                            </TableCell>
+                            <TableCell>{((skillGradeKv[v.name])*100).toFixed(2)} %</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <h2 className="g-subheader">Comentarios</h2>
+                <TextField fullWidth multiline variant="outlined"/>
+            </Grid>
+        </Grid>
+        <Dialog open={isQstnModalOpened} maxWidth="lg"
+            onClose={v => onModalClose()}
+            aria-labelledby="header"
+            id="results-modal" className="g-modal">
+                <DialogTitle id="header">
+                    <HelpOutlineIcon className="icon" fontSize="large"/> 
+                        <span className="text">  Preguntas</span>
+                        <div id="close" onClick={() => onModalClose()}>
+                            <CloseIcon/>
+                        </div>
+                </DialogTitle>
+                <DialogContent>
+                <TableContainer className="modal-table" id="table">
+                    <Table aria-label="sticky table" size="small" stickyHeader
+                        className="g-table">
+                        <TableHead>
+                        <TableRow>
+                            <TableCell className="header-cell">Pregunta</TableCell>
+                            <TableCell className="header-cell answer-cell" size="small">Respuesta</TableCell>
+                            <TableCell className="header-cell">Comentario</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
                         {rows.map((row) => (
                             <TableRow key={row.question}>
-                            <TableCell component="th" scope="row">
-                                {row.question}
-                            </TableCell>
-                            <TableCell align="right">{row.answer}</TableCell>
-                            <TableCell align="right">{row.comments}</TableCell>
+                            <TableCell>{row.question}</TableCell>
+                            <TableCell size="small" className="answer-cell">{row.answer}</TableCell>
+                            <TableCell size="medium">{row.comments}</TableCell>
                             </TableRow>
                         ))}
                         </TableBody>
                     </Table>
-                    </TableContainer>
+                </TableContainer>
                 </DialogContent>
             {/* <DialogActions>
                 <Button onClick={e => this.onAddNewInterviewer()} color="primary">
@@ -152,5 +166,5 @@ export default function ResultsScreen(props: RouteChildrenProps){
                 </Button>
             </DialogActions> */}
         </Dialog>
-    </>
+    </div>
 }

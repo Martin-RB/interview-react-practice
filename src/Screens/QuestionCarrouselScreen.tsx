@@ -3,7 +3,8 @@ import FormControl from "@material-ui/core/FormControl";
 import React, { useState, useContext, useEffect } from "react";
 import { Redirect, RouteChildrenProps } from "react-router-dom";
 import GlobalDataContext from "../Context";
-import AnsweredQuestion from "../Types/AnsweredQuestion";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 type CarrouselState = {
     idx: number
@@ -82,7 +83,7 @@ export default function QuestionCarrouselScreen(props: RouteChildrenProps){
                 carrousel.idx > 0?
                 <Button
                 onClick={v=>decrease()}>
-                    Left
+                    <ArrowBackIosIcon/>
                 </Button>:<div/>
             }
             {
@@ -115,7 +116,7 @@ export default function QuestionCarrouselScreen(props: RouteChildrenProps){
                 carrousel.idx < context.answeredQuestions.length - 1?
                 <Button
                     onClick={v=>increase()}>
-                        Right
+                        <ArrowForwardIosIcon/>
                 </Button>:<div/>
             }
         </div>
@@ -139,22 +140,23 @@ const QuestionComponent = React.forwardRef((props: QuestionComponentProps, ref: 
         props.onChangeComments(comments)
     }
     return <div ref={ref} className="question-slide">
-        <h3>{props.type}</h3>
-        <p><b>{props.questionText}</b></p>
+        <h2 id="title">{props.type}</h2>
+        <p id="question"><b>{props.questionText}</b></p>
         <div>
-        <FormControl component="fieldset">
+        <FormControl component="fieldset" id="field-set">
         <RadioGroup aria-label="answer" row
             name="answer" 
             value={props.answer} 
-            onChange={(e, v)=>{onChangeAnswer(parseInt(v))}}>
+            onChange={(e, v)=>{onChangeAnswer(parseInt(v))}}
+            id="field-container">
                 <FormControlLabel 
                     value={1}
-                    labelPlacement="bottom"
+                    labelPlacement="end"
                     control={<Radio />} 
                     label="Correcto" />
                 <FormControlLabel 
                     value={2}
-                    labelPlacement="bottom"
+                    labelPlacement="end"
                     control={<Radio />} 
                     label="Incorrecto" />
         </RadioGroup>
@@ -164,6 +166,8 @@ const QuestionComponent = React.forwardRef((props: QuestionComponentProps, ref: 
         <FormLabel>Comentarios: </FormLabel>
         <TextField value={props.comments}
             variant="outlined"
+            fullWidth
+            multiline
             onChange={({target:{value}}) => onChangeComments(value)}/>
 
     </div>

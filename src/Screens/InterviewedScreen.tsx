@@ -139,25 +139,30 @@ export default class InterviewedScreen extends React.Component<RouteChildrenProp
             <>
             {this.context.interviewers.length === 0? <Redirect to="/interviewers"/>: null}
             <div id="interviewed">
-                <h2>Candidato</h2>
-                <Grid container>
-                    <Grid container item xs={12} md={6} alignContent="flex-start" id="left-card">
-                        <Grid item xs={2}>
-                            <PermIdentityOutlinedIcon/>
-                        </Grid>
-                        <Grid item xs={10}>
-                            <div>
-                                <div><label>Nombre del candidato</label></div>
+                <h1>Candidato</h1>
+                <Grid container alignContent="center">
+                    <Grid container item xs={12} md={5} alignContent="flex-start" id="left-card" className="card">
+                        <Grid item xs={12}>
+                            <div className="g-field" id="icon-row">
+                                <PermIdentityOutlinedIcon id="icon"/>
+                                <div>
+                                <div><label className="label">
+                                    Nombre del candidato
+                                </label></div>
                                 <TextField
+                                    fullWidth
                                     value={this.state.name}
                                     onChange={({target:{value:name}}) => {
                                         this.setState({name})
                                     }}/>
+                                </div>
                             </div>
                         </Grid>
                         <Grid item xs={12}>
-                            <div>
-                                <div><label>Correo electronico</label></div>
+                            <div className="g-field">
+                                <div><label className="label">
+                                    Correo electronico
+                                </label></div>
                                 <TextField
                                     value={this.state.email}
                                     onChange={({target:{value:email}}) => {
@@ -167,7 +172,9 @@ export default class InterviewedScreen extends React.Component<RouteChildrenProp
                         </Grid>
                         <Grid item xs={12}>
                             <div>
-                                <div><label>Tipo</label></div>
+                                <div><label>
+                                    Tipo
+                                </label></div>
                                 <Select defaultValue={-1}
                                     value={this.state.idxType}
                                     onChange={({target: {value}})=>this.onChangeInterviewedType(value as number)}>
@@ -180,9 +187,9 @@ export default class InterviewedScreen extends React.Component<RouteChildrenProp
                         </Grid>
                     </Grid>
 
-                    <Grid container item xs={12} md={6} id="right-card">
+                    <Grid container item xs={12} md={5} id="right-card" className="card">
                         <Grid item xs={12}>
-                            <h2>Skills a evaluar</h2>
+                            <h2 id="title">Skills a evaluar:</h2>
                         </Grid>
                         <Grid item xs={6}>
                             <FormGroup>
@@ -191,7 +198,7 @@ export default class InterviewedScreen extends React.Component<RouteChildrenProp
                                         if(i%2!==0) return null;                                  
                                         return <FormControlLabel key={i.toString()}
                                             onChange={v=>this.onChangeSkill(i)}
-                                            control={<Checkbox checked={v.isSelected} name={v.skill.name}/>}
+                                            control={<Checkbox checked={v.isSelected} name={v.skill.name} color="default" className="g-checkbox"/>}
                                             label={v.skill.name}/>
                                     })
                                 }
@@ -204,7 +211,7 @@ export default class InterviewedScreen extends React.Component<RouteChildrenProp
                                         if(i%2===0) return null;                             
                                         return <FormControlLabel key={i.toString()}
                                             onChange={v=>this.onChangeSkill(i)}
-                                            control={<Checkbox checked={v.isSelected} name={v.skill.name}/>}
+                                            control={<Checkbox checked={v.isSelected} name={v.skill.name} color="default" className="g-checkbox"/>}
                                             label={v.skill.name}/>
                                     })
                                 }
@@ -213,7 +220,6 @@ export default class InterviewedScreen extends React.Component<RouteChildrenProp
                     </Grid>
                     
                 </Grid>
-                {JSON.stringify(this.context.interviewers)}
             </div>
             </>
         )
